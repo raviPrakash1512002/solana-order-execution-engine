@@ -3,7 +3,7 @@ import { MockDexRouter } from './mockDexRouter';
 import { OrderRepository } from './repository/orderRepository';
 import { WsManager } from './wsManager';
 import { Order, OrderUpdateEvent, OrderExecutionResult } from './types';
-import { trackOrderExecution, trackOrderCompleted, updateQueueMetrics } from './metrics';
+import { trackOrderExecution, trackOrderCompleted, updateQueueMetrics, trackError } from './metrics';
 
 interface OrderJob {
   order: Order;
@@ -76,10 +76,12 @@ export async function processOrder(job: Job<OrderJob>): Promise<OrderExecutionRe
 
     return exec;
   } catch (err) {
+    console.error(`Order ${order.id} execution failed:`, err);
     await OrderRepository.updateFilled(order.id, order.filled, 'failed');
     
-    // Track failed order
+    // Track failed order with enhanced error tracking
     trackOrderCompleted(order.type, order.side, 'failed', order.filled / order.amount);
+    trackError('dex', 'order_execution');
     
     const update: OrderUpdateEvent = {
       id: order.id,
