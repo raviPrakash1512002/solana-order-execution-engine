@@ -4,6 +4,10 @@ import { CreateOrderDTO } from './types';
  * MockDexRouter simulates a DEX/router execution.
  * It returns an execution result with executedAmount and avgPrice.
  */
+/**
+ * MockDexRouter provides a simulated DEX environment for testing and development.
+ * It simulates market pricing, slippage, and partial fills.
+ */
 export const MockDexRouter = {
   getMockPrice() {
     // Simulated market price between 95-105
