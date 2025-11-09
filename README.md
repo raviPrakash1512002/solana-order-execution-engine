@@ -1,4 +1,4 @@
-# order-execution-engine-mock
+# Solana order-execution-engine-mock
 
 A mock DEX order execution engine with market and limit orders, WebSocket updates, and Prometheus metrics. Built with TypeScript, Node.js, PostgreSQL, Redis, and BullMQ.
 
@@ -57,39 +57,12 @@ Content-Type: application/json
   "symbol": "ETH/USDT",
   "side": "buy",
   "amount": 1.5,
-  "type": "limit",           // Optional, defaults to "market"
-  "limitPrice": 1800.50,     // Required for limit orders
-  "timeInForce": "GTC"      // Optional, defaults to "GTC"
+  "type": "limit",           
+  "limitPrice": 1800.50,     
+  "timeInForce": "GTC"      
 }
 
 Response: { "id": "order-uuid" }
-```
-
-#### Health Check
-```http
-GET /health
-
-Response: { 
-  "status": "ok",
-  "postgres": "connected",
-  "redis": "connected",
-  "version": "1.0.0",
-  "timestamp": "2025-11-09T09:42:24.104Z"
-}
-```
-
-#### Metrics
-```http
-GET /metrics
-
-Response: Prometheus metrics format
-# HELP order_queue_size Number of orders in queue
-# TYPE order_queue_size gauge
-order_queue_size 5
-
-# HELP order_execution_duration_seconds Time taken to execute orders
-# TYPE order_execution_duration_seconds histogram
-...
 ```
 
 ### WebSocket API
@@ -273,48 +246,6 @@ For production deployment:
 7. Set up database backups
 8. Use process manager (e.g., PM2)
 
-## License
-
-MIT
-
-#### Health Check
-```http
-GET /health
-
-Response: { 
-  "status": "ok",
-  "postgres": "connected",
-  "redis": "connected"
-}
-```
-
-#### Metrics
-```http
-GET /metrics
-
-Response: Prometheus metrics format
-```
-
-### WebSocket API
-
-Connect to `ws://localhost:3000/ws?clientId=user123`
-
-Events:
-- `order:update`: Order status updates
-  ```json
-  {
-    "event": "order:update",
-    "payload": {
-      "id": "order-uuid",
-      "status": "filled",
-      "filled": 1.5,
-      "avgPrice": 1805.75
-    }
-  }
-  ```
-
-## Metrics
-
 ### Order Metrics
 - `orders_total`: Counter of orders by type/side/status
 - `order_execution_duration_seconds`: Execution time histogram
@@ -340,8 +271,8 @@ Environment variables (see `.env.example`):
 
 Run tests:
 ```bash
-npm test               # All tests
-npm test -- --watch   # Watch mode
+npm test              
+npm test -- --watch   
 ```
 
 Lint:
