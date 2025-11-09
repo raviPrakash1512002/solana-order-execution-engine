@@ -64,10 +64,13 @@ export const errorCounter = new Counter({
   labelNames: ['type', 'operation'] as const
 });
 
-// Track order execution
+// Track order execution with improved granularity
 export function trackOrderExecution(type: OrderType, side: OrderSide, startTime: number) {
   const duration = (Date.now() - startTime) / 1000;
   orderExecutionTime.labels(type, side).observe(duration);
+  
+  // Log execution for monitoring
+  console.info(`Order execution completed - Type: ${type}, Side: ${side}, Duration: ${duration}s`);
 }
 
 // Track order creation
